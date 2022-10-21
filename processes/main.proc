@@ -1,0 +1,33 @@
+proc.main -> {
+	on.trigger: {
+		$update(_ENV_)
+	},
+	on.stop: {
+		echo "^C"
+	},
+	$start(): {
+		start new Activity({
+			type: "native",
+			relation: "1-1"
+		})
+		assign this.newActivity -- proc.main.activity
+		proc.main.activity.start()
+	}
+	$update(env): {
+		proc.main.activity.env.set(env)
+	},
+	$end(): {
+		proc.main.activity.stop()
+		proc.stop(proc.main)
+		proc.clear(proc.main)
+		proc.remove(proc.main)
+	},
+	const {
+		PROC_ID = 09G5ASNGCHT58I8A
+		PROC_NAME = main
+		PROC_INIT = {}
+		PROC_VARS = _ENV_
+		SCRIPT_TYPES = py
+		SYSTEM_RELATION = true
+	}
+}
